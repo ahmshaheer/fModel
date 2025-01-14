@@ -1,0 +1,23 @@
+# Use Python base image
+FROM python:3.9-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Install system dependencies (optional but may help with PyTorch installation)
+RUN apt-get update && apt-get install -y libomp-dev
+
+# Copy the requirements.txt file into the container
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire my_app directory into the container
+COPY . /app/
+
+# Expose the port the server will run on
+EXPOSE 5000
+
+# Command to run the server
+CMD ["python", "/app/server.py"]
