@@ -1,0 +1,22 @@
+# Use Python base image
+FROM python:3.9-slim
+
+# Set the working directory
+WORKDIR /app
+
+COPY pyproject.toml requirements.txt ./
+
+# Copy the application files
+COPY . .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Flower framework
+RUN pip install flwr
+
+# Expose the server port (optional, based on your Flower configuration)
+EXPOSE 8080
+
+# Run the server using Flower's flwr run command
+CMD ["flwr", "run", "server", "--config", "pyproject.toml"]
