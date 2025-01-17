@@ -10,7 +10,7 @@ COPY pyproject.toml requirements.txt ./
 COPY . .
 
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt flwr
 
 # Install Flower framework
 RUN pip install flwr

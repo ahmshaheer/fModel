@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   server:
     build:
@@ -8,6 +9,9 @@ services:
       - "8080:8080"
     networks:
       - flower-net
+    volumes:
+      - ./pyproject.toml:/app/pyproject.toml  # Optional: Mount for pyproject.toml
+    command: ["flwr", "run", "server"]  # Overriding CMD if needed
 
   client:
     build:
