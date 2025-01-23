@@ -1,22 +1,22 @@
-# Use Python base image
+# Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /app
 
-COPY pyproject.toml requirements.txt ./
+# Copy the pyproject.toml file into the container
+COPY pyproject.toml ./
 
-# Copy the application files
-COPY . .
+# Install Hatch
+RUN pip install hatch
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt flwr
+# Install the dependencies
+RUN hatch env create
 
-# Install Flower framework
 RUN pip install flwr
 
-# Expose the server port (optional, based on your Flower configuration)
-EXPOSE 8080
 
-# Run the server using Flower's flwr run command
-CMD ["flwr", "run", "server", "--config", "pyproject.toml"]
+# Copy the rest of the application code into the container
+COPY . .
+
+CMD ["flwr", "run", "my_app/server_app.py"]

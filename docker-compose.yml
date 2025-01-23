@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   server:
@@ -6,23 +6,19 @@ services:
       context: .
       dockerfile: Dockerfile.server
     ports:
-      - "8080:8080"
+      - "5000:5000"
     networks:
-      - flower-net
-    volumes:
-      - ./pyproject.toml:/app/pyproject.toml  # Optional: Mount for pyproject.toml
-    command: ["flwr", "run", "server"]  # Overriding CMD if needed
-
+      - flwr-network
+  
   client:
     build:
       context: .
       dockerfile: Dockerfile.client
-    environment:
-      - SERVER_ADDRESS=http://server:8080
+    depends_on:
+      - server
     networks:
-      - flower-net
+      - flwr-network
 
 networks:
-  flower-net:
+  flwr-network:
     driver: bridge
-
